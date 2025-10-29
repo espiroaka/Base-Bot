@@ -3,6 +3,7 @@ import { glob } from "node:fs/promises";
 import { logger } from "../utils/logger.js";
 import type { BotConfig } from "./types.js";
 import { Command } from "./Command.js";
+import { Event } from "./Event.js";
 
 class BotClient extends Client {
   public declare config: BotConfig;
@@ -20,10 +21,6 @@ class BotClient extends Client {
     await this.loadEvents();
     this.login(process.env.BOT_TOKEN);
     this.loadCommands();
-
-    this.on("clientReady", () => {
-      logger.info(`Logged in as ${this.user?.tag}`);
-    });
   }
 
   async loadCommands() {
@@ -59,8 +56,8 @@ class BotClient extends Client {
     for await (const filePath of eventsPaths) {
       const event = (await import(`file://${filePath}`)).default;
 
-      if (typeof event.name !== "string" || typeof event.run !== "function") {
-        console.warn(`Invalid event structure in file: ${filePath}`);
+      if (!(event instanceof Event)) {
+        console.warn(`Event in file: ${filePath} is not an instance of Event.`);
         continue;
       }
 
