@@ -37,7 +37,7 @@ export interface BotConfig {
 
 export declare type CommandPermissions = ["dev", "admin", "user"];
 
-export declare type CommandIntents = []; //Tal vez añadir middlerware en el futuro para manejar ids y tal??
+export declare type CommandIntents = []; //Tal vez añadir middleware en el futuro para manejar ids y tal??
 
 export declare type CommandType = "ChatInput" | "User" | "Message";
 
